@@ -25,7 +25,7 @@ export default function Detect() {
       );
 
       const data = await res.json();
-      setResult(data.prediction || "No result");
+      setResult(data.prediction || "No result received");
     } catch (err) {
       console.error(err);
       alert("Error connecting backend");
@@ -36,14 +36,13 @@ export default function Detect() {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 via-blue-700 to-purple-700 text-white">
-
       <h1 className="text-3xl font-bold mb-2">🛡️ VioLens AI</h1>
+
       <p className="opacity-80 mb-6">
-        Smart Violence Detection System (CNN + LSTM)
+        Smart Violence Detection System
       </p>
 
       <div className="bg-white text-black p-6 rounded-xl shadow-lg text-center">
-
         <h2 className="font-semibold mb-3">📤 Upload Video</h2>
 
         <input
@@ -69,14 +68,12 @@ export default function Detect() {
       </div>
 
       <div className="mt-6 text-sm opacity-80 text-center">
-        💡 <b>Pro Tips:</b>
+        💡 <b>Tips:</b>
         <ul>
           <li>• Use short clips</li>
           <li>• Ensure clear visibility</li>
-          <li>• Avoid blurry videos</li>
         </ul>
       </div>
-
     </main>
   );
 }
