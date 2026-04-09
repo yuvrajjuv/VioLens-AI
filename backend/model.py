@@ -1,65 +1,44 @@
-import cv2
 import numpy as np
 import os
-from tensorflow.keras.models import load_model
 
-# =========================
-# CONFIG
-# =========================
 MODEL_PATH = "violence_model_lstm.h5"
-IMG_SIZE = 64
-SEQUENCE_LENGTH = 20
 
-# =========================
-# LOAD MODEL (SAFE)
-# =========================
 model = None
 
-if os.path.exists(MODEL_PATH):
-    print("✅ Loading model...")
-    model = load_model(MODEL_PATH)
-else:
-    print("⚠️ Model file not found. Running in dummy mode.")
+def load_model_safely():
+    global model
+    try:
+        from tensorflow.keras.models import load_model
+        if os.path.exists(MODEL_PATH):
+            model = load_model(MODEL_PATH)
+            print("✅ Model loaded successfully")
+        else:
+            print("⚠️ Model file not found")
+    except Exception as e:
+        print("❌ Model load failed:", e)
+        model = None
 
-# =========================
-# FRAME EXTRACTION
-# =========================
-def extract_frames(video_path):
-    cap = cv2.VideoCapture(video_path)
-    frames = []
+load_model_safely()
 
-    while len(frames) < SEQUENCE_LENGTH:
-        ret, frame = cap.read()
-        if not ret:
-            break
 
-        frame = cv2.resize(frame, (IMG_SIZE, IMG_SIZE))
-        frame = frame / 255.0
-        frames.append(frame)
+def predict_dummy():
+    # fallback if model not loaded
+    return {"prediction": "no_model", "confidence": 0.0}
 
-    cap.release()
 
-    # padding if frames less
-    while len(frames) < SEQUENCE_LENGTH:
-        frames.append(np.zeros((IMG_SIZE, IMG_SIZE, 3)))
-
-    return np.array(frames)
-
-# =========================
-# PREDICTION
-# =========================
-def predict_video(video_path):
-    
-    # 🔥 अगर model नहीं है
+def predict(input_data):
     if model is None:
-        return "⚠️ Model not loaded (demo mode)"
+        return predict_dummy()
+    
+    try:
+        # example prediction (adjust according to your input)
+        input_data = np.array(input_data)
+        input_data = np.expand_dims(input_data, axis=0)
 
-    frames = extract_frames(video_path)
-    frames = np.expand_dims(frames, axis=0)
-
-    prediction = model.predict(frames)[0][0]
-
-    if prediction > 0.5:
-        return "🚨 Violence Detected"
-    else:
-        return "✅ No Violence"
+        pred = model.predict(input_data)
+        return {
+            "prediction": float(pred[0][0]),
+            "confidence": float(np.max(pred))
+        }
+    except Exception as e:
+        return {"error": str(e)}
