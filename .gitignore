@@ -1,0 +1,70 @@
+# =========================
+# NEXT.JS / FRONTEND
+# =========================
+/node_modules
+/.next/
+/out/
+/build
+
+# yarn / pnpm
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# =========================
+# TESTING
+# =========================
+/coverage
+
+# =========================
+# LOGS
+# =========================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# =========================
+# ENV FILES
+# =========================
+.env*
+
+# =========================
+# VERCEL
+# =========================
+.vercel
+
+# =========================
+# TYPESCRIPT
+# =========================
+*.tsbuildinfo
+next-env.d.ts
+
+# =========================
+# SYSTEM FILES
+# =========================
+.DS_Store
+*.pem
+
+# =========================
+# PYTHON / BACKEND
+# =========================
+.venv/
+__pycache__/
+*.pyc
+
+# =========================
+# ML / DATA
+# =========================
+dataset/
+uploads/
+
+# =========================
+# OPTIONAL (MODEL FILE)
+# =========================
+# Uncomment if model is too large (>100MB)
+# *.h5
