@@ -1,26 +1,29 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from model import predict_video
 import shutil
 import os
-from model import predict_video
 
 app = FastAPI()
 
-# CORS (frontend connect ke liye)
+# ✅ CORS (frontend connect ke liye)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # baad me restrict karenge
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# temp folder
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+
 @app.get("/")
 def home():
-    return {"message": "VioLens AI Backend Running 🚀"}
+    return {"message": "Backend is running 🚀"}
+
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
@@ -31,4 +34,4 @@ async def predict(file: UploadFile = File(...)):
 
     result = predict_video(file_path)
 
-    return {"prediction": result}
+    return result
