@@ -16,13 +16,15 @@ export default function Detect() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/predict", {
+      const res = await fetch("https://violens-ai.onrender.com/predict", {
         method: "POST",
         body: formData,
       });
 
       const data = await res.json();
-      setResult(data.prediction);
+
+      // better display
+      setResult(`${data.prediction} (${data.confidence})`);
     } catch (err) {
       console.error(err);
       alert("Error connecting backend");
@@ -45,6 +47,7 @@ export default function Detect() {
 
         <input
           type="file"
+          accept="video/*"
           onChange={(e) => setFile(e.target.files?.[0] || null)}
           className="mb-3"
         />
