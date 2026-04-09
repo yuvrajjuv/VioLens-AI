@@ -16,15 +16,16 @@ export default function Detect() {
     setLoading(true);
 
     try {
-      const res = await fetch("https://violens-ai.onrender.com/predict", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/predict`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await res.json();
-
-      // better display
-      setResult(`${data.prediction} (${data.confidence})`);
+      setResult(data.prediction || "No result");
     } catch (err) {
       console.error(err);
       alert("Error connecting backend");
@@ -47,7 +48,6 @@ export default function Detect() {
 
         <input
           type="file"
-          accept="video/*"
           onChange={(e) => setFile(e.target.files?.[0] || null)}
           className="mb-3"
         />
@@ -68,7 +68,6 @@ export default function Detect() {
         )}
       </div>
 
-      {/* PRO TIPS */}
       <div className="mt-6 text-sm opacity-80 text-center">
         💡 <b>Pro Tips:</b>
         <ul>
